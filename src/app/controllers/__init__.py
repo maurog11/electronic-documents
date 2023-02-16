@@ -1,0 +1,16 @@
+from.consecutives.consecutivepayroll.consecutivepayroll_controller import ConsecutivePayRollController
+from.consecutives.consecutiveinvoices.consecutiveinvoices_controller import ConsecutiveInvoicesController
+from.consecutives.consecutivenotes.consecutivenotes_controller import ConsecutiveNotesController
+from.location.cities.city_controller import CityController
+from.location.departments.department_controller import DepartmentController
+from.docs.certs.certs_controller import CertsController
+from.docs.invoices.invoices_controller import InvoicesController
+from.docs.notes.notes_controller import NotesController
+from.sends_docs.sends.sends_controller import SendsController
+from.sends_docs.notessends.notessends_controller import NotesSendsController
+from.sends_docs.payrollsends.payrollsends_controller import PayRollSendsController
+from.security.application_controller import ApplicationController
+from.security.auth_controller import AuthController
+from.sends_docs.events.events_controller import EventsController
+from.receipts.shoppings.shoppings_controller import ShoppingsController
+from.docs.emails.emails_controller import EmailsController

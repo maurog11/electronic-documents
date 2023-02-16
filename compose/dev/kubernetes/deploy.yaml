@@ -1,0 +1,124 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-documents
+  labels:
+    app: api-documents-back
+  namespace: development
+spec:
+  selector:
+    matchLabels:
+      app: api-documents-back
+  template:
+    metadata:
+      labels:
+        app: api-documents-back
+    spec:
+      containers:
+      - env:
+        - name: TZ
+          value: America/Bogota
+        - name: HOST
+          value: "0.0.0.0.0"
+        - name: PORT
+          value: "5000"
+        #Para QA DEBUG=1
+        - name: DEBUG
+          value: "1"
+        # Path PDF documents
+        - name: PATH_DOCS
+          value: "/pymesfiles/documents"
+        # Email configurations
+        - name: EMAIL_DOCS
+          valueFrom:
+            secretKeyRef:
+              name: mail-qa
+              key: EMAIL_DOCS
+        - name: EMAIL_KEY_DOCS
+          valueFrom:
+            secretKeyRef:
+              name: mail-qa
+              key: EMAIL_KEY_DOCS
+        - name: EMAIL_PORT_DOCS
+          valueFrom:
+            secretKeyRef:
+              name: mail-qa
+              key: EMAIL_PORT_DOCS
+        - name: EMAIL_SMTP_DOCS
+          valueFrom:
+            secretKeyRef:
+              name: mail-qa
+              key: EMAIL_SMTP_DOCS
+        # Connection Pool
+        - name: POOL_SIZE
+          value: "1"
+        - name: POOL_RECYCLE
+          value: "50"
+        - name: POOL_TIMEOUT
+          value: "30"
+        - name: POOL_MAX_OVERFLOW
+          value: "4"
+        # MySQL connection variables
+        - name: DB_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: mysql-qa
+              key: DB_DATABASE
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: mysql-qa
+              key: DB_USER
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-qa
+              key: DB_PASSWORD
+        - name: DB_PORT
+          valueFrom:
+            secretKeyRef:
+              name: mysql-qa
+              key: DB_PORT
+        - name: DB_HOST
+          valueFrom:
+            secretKeyRef:
+              name: mysql-qa
+              key: DB_HOST
+        image: softpymesregistry.azurecr.io/documents-backend:develop-4924
+        imagePullPolicy: Always
+        name: documents-api
+        ports:
+        - containerPort: 5001
+          protocol: TCP
+        resources:
+          requests:
+            memory: 10Mi
+            cpu: 10m
+          limits:
+            memory: 200Mi
+            cpu: 300m
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /pymesfiles/
+          name: config-volumen
+          #subPath: documents
+      volumes:
+      - persistentVolumeClaim:
+          claimName: devfiles-pv-claim
+        name: config-volumen
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-documents
+  namespace: development
+spec:
+  ports:
+  - name: port-5001
+    port: 5001
+    protocol: TCP
+    targetPort: 5001
+  selector:
+    app: api-documents-back
+  type: ClusterIP

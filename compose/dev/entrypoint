@@ -1,0 +1,33 @@
+#!/bin/sh
+
+set -o errexit
+set -o nounset
+
+mysql_ready() {
+python << END
+import os
+import sys
+import pymysql
+
+try:
+    pymysql.connect(
+        host=os.environ['DB_HOST'],
+        port=int(os.environ['DB_PORT']),
+        user=os.environ['DB_USER'],
+        password=os.environ['DB_PASSWORD'],
+        database=os.environ['DB_DATABASE'])
+except pymysql.err.OperationalError:
+    sys.exit(-1)
+sys.exit(0)
+
+END
+}
+until mysql_ready; do
+  >&2 echo 'Esperando que el servidor MySQL este disponible...'
+  sleep 1
+done
+>&2 echo 'MySQL esta disponible'
+
+flask db upgrade
+
+exec "$@"

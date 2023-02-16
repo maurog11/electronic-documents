@@ -1,0 +1,16 @@
+from.base_model import BaseModel
+from.sends_docs.sends.sends_model import SendsModel
+from.consecutives.consecutiveinvoices.consecutiveinvoices_model import ConsecutiveInvoicesModel
+from.consecutives.consecutivenotes.consecutivenotes_model import ConsecutiveNotesModel
+from.consecutives.consecutivepayroll.consecutivepayroll_model import ConsecutivePayRollModel
+from.docs.notes.notes_model import NotesModel
+from.docs.certs.certs_model import CertsModel
+from.docs.invoices.invoices_model import InvoicesModel
+from.location.cities.city_model import CityModel
+from.location.departments.department_model import DepartmentModel
+from.sends_docs.notessends.notessends_model import NotesSendsModel
+from.sends_docs.payrollsends.payrollsends_model import PayRollSendsModel
+from.security.applications_model import ApplicationModel
+from.sends_docs.events.events_model import EventsModel
+from.receipts.shoppings.shoppings_model import ShoppingsModel
+from.docs.emails.emails_model import EmailsModel
